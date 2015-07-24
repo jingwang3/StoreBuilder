@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="storeBuilder">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StoreBuilder V2.0.0</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="./js/angular.min.js"></script>
+    <script src="./js/todo.js"></script>
+</head>
+
+<body ng-controller="StoreBuilderCtrl">
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-5" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">SB V2.0.0</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
+          <p class="navbar-text navbar-right"><a href="#" class="navbar-link" data-toggle="modal" data-target="#storeModal">Add Store</a></p>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="col-sm-2">
+        <h1>Stores</h1>
+        <div class="list-group">
+          <a href="" ng-click="setTargetStore(store)" class="list-group-item list-group-item-info" ng-repeat="store in allStores">
+            {{store.brand_name}}
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <h1>Details<button type="button" class="btn btn-success pull-right">edit</button></h1>
+        <h2>{{currentStore.brand_name}}</h2>
+        <img ng-src="{{getStaticMap(currentStore)}}" alt="">
+        <div ng-repeat="(key, value) in currentStore">
+          {{key}}: {{value}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="storeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Store Editor</h4>
+          </div>
+          <div class="modal-body">
+            brand_name: <input type="text" ng-model="newStore.brand_name">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-if="newStore.brand_name !== ''" ng-click="createNewStore()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+
+</html>
