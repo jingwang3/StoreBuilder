@@ -42,7 +42,7 @@
         <h1>Stores</h1>
         <div class="list-group">
           <a href="" ng-click="setTargetStore(store)" class="list-group-item list-group-item-info" ng-repeat="store in allStores">
-            {{store.brand_name}}
+            {{store.brand_name}}<span class="pull-right">></span>
           </a>
         </div>
       </div>
@@ -50,12 +50,29 @@
         <h1>Details<button type="button" class="btn btn-success pull-right">edit</button></h1>
         <h2>{{currentStore.brand_name}}</h2>
         <img ng-src="{{getStaticMap(currentStore)}}" alt="">
-        <div ng-repeat="(key, value) in currentStore">
-          {{key}}: {{value}}
+        <div class="row">
+          <div ng-repeat="(key, value) in currentStore">
+            <strong>{{key}}</strong>: {{value}}
+          </div>         
+        </div>
+        <div class="row text-right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dishModal">Add Dish</button>
+        </div>
+        <div class="row">
+          <div class="list-group">
+            <a href="" ng-click="setTargetDish(dish)" class="list-group-item list-group-item-warning" ng-repeat="dish in dishesInStore">
+              # {{$index+1}} : {{dish.dish_name}}<span class="pull-right">></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3" ng-if="currentDish.dish_name">
+        <h1>Dish Details<button type="button" class="btn btn-warning pull-right">edit</button></h1>
+        <div ng-repeat="(key, value) in currentDish">
+          <strong>{{key}}</strong>: {{value}}
         </div>
       </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="storeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -70,6 +87,23 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" ng-if="newStore.brand_name !== ''" ng-click="createNewStore()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="dishModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Dish Editor</h4>
+          </div>
+          <div class="modal-body">
+            dish_name: <input type="text" ng-model="newDish.dish_name">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-if="newDish.dish_name !== ''" ng-click="createNewDish()">Save changes</button>
           </div>
         </div>
       </div>
