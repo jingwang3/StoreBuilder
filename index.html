@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="col-sm-3">
-        <h1>Details<button type="button" class="btn btn-success pull-right">edit</button></h1>
+        <h1>Details<button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#storeEditModal">edit</button></h1>
         <h2>{{currentStore.brand_name}}</h2>
         <img ng-src="{{getStaticMap(currentStore)}}" alt="">
         <div class="row">
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="col-sm-3" ng-if="currentDish.dish_name">
-        <h1>Dish Details<button type="button" class="btn btn-warning pull-right">edit</button></h1>
+        <h1>Dish Details<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#dishEditModal">edit</button></h1>
         <div ng-repeat="(key, value) in currentDish">
           <strong>{{key}}</strong>: {{value}}
         </div>
@@ -82,7 +82,9 @@
             <h4 class="modal-title" id="myModalLabel">Store Editor</h4>
           </div>
           <div class="modal-body">
-            brand_name: <input type="text" ng-model="newStore.brand_name">
+            brand_name: <input type="text" ng-model="newStore.brand_name"><br>
+            lat: <input type="text" ng-model="newStore.geolocation.lat"><br>
+            long: <input type="text" ng-model="newStore.geolocation.long">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -96,7 +98,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Dish Editor</h4>
+            <h4 class="modal-title" id="myModalLabel">Add Dish</h4>
           </div>
           <div class="modal-body">
             dish_name: <input type="text" ng-model="newDish.dish_name">
@@ -104,6 +106,50 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" ng-if="newDish.dish_name !== ''" ng-click="createNewDish()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="storeEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Store Editor</h4>
+          </div>
+          <div class="modal-body">
+            dish_name: <input type="text" ng-model="currentStore.brand_name"><br>
+            price: <input type="text" ng-model="currentStore.desc"><br>
+            lat: <input type="text" ng-model="currentStore.geolocation.lat"><br>
+            long: <input type="text" ng-model="currentStore.geolocation.long">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="updateStore(currentStore)">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="dishEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Dish Editor</h4>
+          </div>
+          <div class="modal-body">
+            dish_name: <input type="text" ng-model="currentDish.dish_name"><br>
+            price: <input type="text" ng-model="currentDish.price"><br>
+            categories <a href="" ng-click="addCatLabel(currentDish)">add label</a>
+            <ol>
+              <li ng-repeat="cat in currentDish.categories track by $index">
+                <input type="text" ng-model="currentDish.categories[$index]"> <a href="" ng-click="removeLabel(currentDish, $index)">remove</a>
+              </li>
+            </ol>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="updateDish(currentDish)">Save changes</button>
           </div>
         </div>
       </div>

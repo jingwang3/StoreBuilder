@@ -1,6 +1,6 @@
 angular.module('storeBuilder', [])
   .controller('StoreBuilderCtrl', ['$scope', '$http', function($scope, $http) {
-      $scope.newStore = {brand_name: ""};
+      $scope.newStore = {brand_name: "", geolocation:{lat:'', long:''}};
       $scope.newDish = {dish_name: ""};
 
       $scope.loadStores = function(){
@@ -24,7 +24,6 @@ angular.module('storeBuilder', [])
           }else{
             var path = 'http://quamenu-api.herokuapp.com/dish/all';
           }
-          console.log(path);
           $http.get(path).
             success(function(data, status, headers, config) {
               // this callback will be called asynchronously
@@ -38,9 +37,17 @@ angular.module('storeBuilder', [])
             }); 
       };
 
+      $scope.addCatLabel = function(dish){
+        dish.categories.push('new label');
+      };
+
+      $scope.removeLabel = function(dish, index){
+        dish.categories.splice(index, 1);
+      }
+
       $scope.getStaticMap = function(store){
         if(store !== undefined){
-          return 'https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x125&markers=' + store.geolocation.lat + ',' + store.geolocation.long;
+          return 'https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=400x250&markers=' + store.geolocation.lat + ',' + store.geolocation.long;
         }
       };
 
@@ -68,12 +75,13 @@ angular.module('storeBuilder', [])
       // };
 
       $scope.createNewStore = function(){
-        if($scope.newStore.brand_name !== ''){
+        if($scope.newStore.brand_name !== '' && $scope.newStore.geolocation !== ''){
           $http.post('http://quamenu-api.herokuapp.com/store/addstore', $scope.newStore).
             success(function(data, status, headers, config) {
               // this callback will be called asynchronously
               // when the response is available
               $scope.newStore.brand_name = '';
+              $scope.newStore.geolocation = {lat:'', long:''};
               jQuery("#storeModal").modal('hide');
               $scope.loadStores();
             }).
@@ -87,6 +95,7 @@ angular.module('storeBuilder', [])
       $scope.createNewDish = function(){
         if($scope.newDish.dish_name !== ''){
           $scope.newDish.storeID = [$scope.currentStore._id];
+          $scope.newDish.geolocation = {lat:$scope.currentStore.geolocation.lat, long:$scope.currentStore.geolocation.long};
           $http.post('http://quamenu-api.herokuapp.com/dish/adddish', $scope.newDish).
             success(function(data, status, headers, config) {
               // this callback will be called asynchronously
@@ -94,6 +103,36 @@ angular.module('storeBuilder', [])
               $scope.newDish.dish_name = '';
               jQuery("#dishModal").modal('hide');
               $scope.loadStoreDishes($scope.currentStore);
+            }).
+            error(function(data, status, headers, config) {
+              // called asynchronously if an error occurs
+              // or server returns response with an error status.
+            });         
+        };
+      }
+
+      $scope.updateStore = function(store){
+        if(store){
+          $http.post('http://quamenu-api.herokuapp.com/store/updatestore/'+store._id, store).
+            success(function(data, status, headers, config) {
+              // this callback will be called asynchronously
+              // when the response is available
+              jQuery("#storeEditModal").modal('hide');
+            }).
+            error(function(data, status, headers, config) {
+              // called asynchronously if an error occurs
+              // or server returns response with an error status.
+            });         
+        };
+      }
+
+      $scope.updateDish = function(dish){
+        if(dish){
+          $http.post('http://quamenu-api.herokuapp.com/dish/updatedish/'+dish._id, dish).
+            success(function(data, status, headers, config) {
+              // this callback will be called asynchronously
+              // when the response is available
+              jQuery("#dishEditModal").modal('hide');
             }).
             error(function(data, status, headers, config) {
               // called asynchronously if an error occurs
