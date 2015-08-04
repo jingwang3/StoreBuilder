@@ -140,6 +140,7 @@
           <div class="modal-body">
             dish_name: <input type="text" ng-model="currentDish.dish_name"><br>
             price: <input type="text" ng-model="currentDish.price"><br>
+            image_url: <input type="text" ng-model="currentDish.image_url"><br>
             categories <a href="" ng-click="addCatLabel(currentDish)">add label</a>
             <ol>
               <li ng-repeat="cat in currentDish.categories track by $index">
@@ -157,6 +158,11 @@
     <!-- /container -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+      window.onbeforeunload = function() {
+  return "Do you want to leave?";
+};
+    </script>
 </body>
 
 </html>
