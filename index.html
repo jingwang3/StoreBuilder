@@ -68,7 +68,7 @@
       </div>
       <div class="col-sm-3" ng-if="currentDish.dish_name">
         <h1>Dish Details<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#dishEditModal">edit</button></h1>
-        <img src="{{currentDish.image_url}}" alt="">
+        <img src="{{currentDish.image_url}}" alt="" class="img-responsive">
         <div ng-repeat="(key, value) in currentDish">
           <strong>{{key}}</strong>: {{value}}
         </div>
